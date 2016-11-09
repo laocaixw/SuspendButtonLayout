@@ -8,7 +8,7 @@
 
 ### 二.效果图
 
-![image](https://raw.githubusercontent.com/laocaixw/SuspendedButton/master/myfile/%E6%95%88%E6%9E%9C%E5%9B%BE.gif)
+![image](https://raw.githubusercontent.com/laocaixw/SuspendButtonLayout/master/screen/image1.gif)
 
 ### 三.用法
 
@@ -65,7 +65,7 @@
 - imageMainClose="@mipmap/suspendMainClose" // 中间按钮关闭的图片
 - image1="@mipmap/suspend_1" // 子按钮的图片，image1-6
 
-![image](https://raw.githubusercontent.com/laocaixw/SuspendedButton/master/myfile/%E6%95%88%E6%9E%9C%E5%9B%BE.gif)
+![image](https://raw.githubusercontent.com/laocaixw/SuspendButtonLayout/master/screen/image2.jpg)
 
 ##### 2.代码使用如下：
 
