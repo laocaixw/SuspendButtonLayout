@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SuspendButtonLayout">
+        <!-- 子按钮数量，3-6之间，小于3默认为3，大于6默认为6 -->
+        <attr name="number" format="integer" />
+        <!-- 上下方留出的空间，默认分别小于宽高中较小者的一半 -->
+        <attr name="marginY" format="dimension" />
+        <!-- 主按钮与子按钮间距，默认小于等于marginY -->
+        <attr name="distance" format="dimension" />
+        <!-- 按钮的大小，默认小于distance -->
+        <attr name="imageSize" format="dimension" />
+        <!-- 按钮图片 -->
+        <attr name="imageMainOpen" format="reference" />
+        <attr name="imageMainClose" format="reference" />
+        <attr name="image1" format="reference" />
+        <attr name="image2" format="reference" />
+        <attr name="image3" format="reference" />
+        <attr name="image4" format="reference" />
+        <attr name="image5" format="reference" />
+        <attr name="image6" format="reference" />
+    </declare-styleable>
+</resources>

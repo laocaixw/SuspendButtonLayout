@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:suspend="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Hello World!" />
+    </LinearLayout>
+
+    <com.laocaixw.layout.SuspendButtonLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        suspend:distance="80dp"
+        suspend:image1="@mipmap/suspend_1"
+        suspend:image2="@mipmap/suspend_2"
+        suspend:image3="@mipmap/suspend_3"
+        suspend:image4="@mipmap/suspend_4"
+        suspend:image5="@mipmap/suspend_5"
+        suspend:image6="@mipmap/suspend_6"
+        suspend:imageMainClose="@mipmap/suspend_main_close"
+        suspend:imageMainOpen="@mipmap/suspend_main_open"
+        suspend:imageSize="50dp"
+        suspend:marginY="100dp"
+        suspend:number="8" />
+
+</RelativeLayout>
