@@ -1,8 +1,12 @@
 apply plugin: 'com.android.library'
-
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+// This is the library version used when deploying the artifact
+version = "1.0.0"
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.2"
+    resourcePrefix "suspendbuttonlayout__"    //这个随便填
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 24
@@ -25,4 +29,96 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:24.2.1'
     testCompile 'junit:junit:4.12'
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+def siteUrl = 'https://github.com/laocaixw/SuspendButtonLayout' // 项目的主页
+def gitUrl = 'https://github.com/laocaixw/SuspendButtonLayout.git' // Git仓库的url
+def issuesUrl = 'https://github.com/laocaixw/SuspendButtonLayout/issues' // issues的url
+
+group = 'com.laocaixw.suspendbuttonlayout' // 组名
+install {
+    repositories.mavenInstaller {
+        pom.project {
+            packaging 'aar'
+            groupId 'com.laocaixw.suspendbuttonlayout' // 组名
+            artifactId 'suspendbuttonlayout' // 包名
+
+            name 'suspendbuttonlayout'
+            description 'Suspend Button Layout'
+            url siteUrl
+            inceptionYear '2016'
+
+            licenses {
+                license {
+                    name 'The Apache Software License, Version 2.0'
+                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    distribution 'repo'
+                }
+            }
+            scm {
+                connection gitUrl
+                url siteUrl
+            }
+            developers {
+                developer {
+                    name 'laocaixw'
+                    email 'laocaixw@126.com'
+                }
+            }
+        }
+    }
+}
+
+// Bintray
+//获取local.propertes的信息
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+    publish = true
+    configurations = ['archives']
+    pkg {
+        //填入 bintray 上对应的 package 信息
+        repo = 'suspend-button-layout' // 仓库名
+        name = 'SuspendButtonLayout' // 包名
+        userOrg = 'laocai' // 组织名。如果repo(仓库)属于user下的某个Organization
+        vcsUrl = gitUrl
+        websiteUrl = siteUrl
+        licenses = ['Apache-2.0']
+        issueTrackerUrl = issuesUrl
+        publicDownloadNumbers = true
+        version {
+            name = '1.0.0'
+            desc = 'Suspend Button Layout'
+            vcsTag = '1.0.0'
+            attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
+        }
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+task findConventions << {
+    println project.getConvention()
 }
