@@ -26,6 +26,7 @@ public class SuspendButtonLayout extends RelativeLayout implements View.OnTouchL
     private int mDegree; // 按钮打开路径之间的角度
     private float mMarginY; // 上下方留出的空间
     private float mDistance; // 主按钮与子按钮间距
+    private float mImageSize; // 按钮的大小
 
     private int[] mResImage = new int[6];
     private int mResMainClose, mResMainOpen;
@@ -85,7 +86,7 @@ public class SuspendButtonLayout extends RelativeLayout implements View.OnTouchL
             if (mDistance > mMarginY) mDistance = mMarginY;
 
             // 按钮的大小，默认小于主按钮与子按钮间距
-            float mImageSize = ta.getDimension(R.styleable.SuspendButtonLayout_imageSize,
+            mImageSize = ta.getDimension(R.styleable.SuspendButtonLayout_imageSize,
                     mDistance / 2);
             if (mImageSize > mDistance) mImageSize = mDistance;
 
@@ -110,7 +111,7 @@ public class SuspendButtonLayout extends RelativeLayout implements View.OnTouchL
             // 按钮布局
             LayoutParams params = new LayoutParams((int) mImageSize, (int) mImageSize);
 
-            for (int i = 0; i < mResImage.length; i++) {
+            for (int i = 0; i < mNumber; i++) {
                 ImageView iv = new ImageView(context);
                 iv.setPadding(8, 8, 8, 8);
                 iv.setImageResource(mResImage[i]);

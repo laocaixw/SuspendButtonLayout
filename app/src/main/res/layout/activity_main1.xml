@@ -32,6 +32,6 @@
         suspend:imageMainOpen="@mipmap/suspend_main_open"
         suspend:imageSize="50dp"
         suspend:marginY="100dp"
-        suspend:number="8" />
+        suspend:number="6" />
 
 </RelativeLayout>

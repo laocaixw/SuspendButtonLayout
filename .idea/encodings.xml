@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8">
+    <file url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.laocaixw.suspendbuttonlayout/suspendbuttonlayout/1.0.1/a794fb5a7bbff66310792f2c0e7d4bea1a1a7b11/suspendbuttonlayout-1.0.1-sources.jar!/com/laocaixw/layout/SuspendButtonLayout.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/suspendbuttonlayout/src/main/java/com/laocaixw/layout/SuspendButtonLayout.java" charset="GBK" />
     <file url="PROJECT" charset="UTF-8" />
   </component>

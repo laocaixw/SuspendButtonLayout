@@ -2,10 +2,10 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 // This is the library version used when deploying the artifact
-version = "1.0.0"
+version = "1.0.1"
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.2"
+    buildToolsVersion "25.0.3"
     resourcePrefix "suspendbuttonlayout__"    //这个随便填
     defaultConfig {
         minSdkVersion 15
@@ -107,9 +107,9 @@ bintray {
         issueTrackerUrl = issuesUrl
         publicDownloadNumbers = true
         version {
-            name = '1.0.0'
+            name = '1.0.1'
             desc = 'Suspend Button Layout'
-            vcsTag = '1.0.0'
+            vcsTag = '1.0.1'
             attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
         }
     }

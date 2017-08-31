@@ -19,7 +19,7 @@
 在app的build.gradle文件中添加依赖：
 ```
 dependencies {
-    compile 'com.laocaixw.suspendbuttonlayout:suspendbuttonlayout:1.0.0'
+    compile 'com.laocaixw.suspendbuttonlayout:suspendbuttonlayout:1.0.1'
 }
 ```
 
@@ -123,6 +123,11 @@ suspendButtonLayout.setMainOpenImageResource(R.mipmap.suspend_main_open); //设�
 3. 悬浮按钮OnSuspendListener事件监听采用接口回调机制。
 
 **注：欢迎[讨论和提出建议](https://github.com/laocaixw/SuspendButtonLayout/issues)，如果觉得不错随手点个star哦！(^_^)**
+
+## 六.版本
+
+- 1.0.0 初始版本。
+- 1.0.1 修复子按钮数量少于6时，主按钮下方一直有多余按钮问题。
 
 # License
 
