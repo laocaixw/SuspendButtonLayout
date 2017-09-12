@@ -19,7 +19,7 @@
 在app的build.gradle文件中添加依赖：
 ```
 dependencies {
-    compile 'com.laocaixw.suspendbuttonlayout:suspendbuttonlayout:1.0.1'
+    compile 'com.laocaixw.suspendbuttonlayout:suspendbuttonlayout:1.0.2'
 }
 ```
 
