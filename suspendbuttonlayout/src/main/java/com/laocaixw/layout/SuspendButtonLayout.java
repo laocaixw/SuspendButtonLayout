@@ -20,13 +20,13 @@ import java.util.List;
 
 public class SuspendButtonLayout extends RelativeLayout implements View.OnTouchListener {
 
-    private float mScreenWidth, mScreenHeight; // ÆÁÄ»¿í¸ß£¬²»°üº¬×´Ì¬À¸
+    private float mScreenWidth, mScreenHeight; // å±å¹•å®½é«˜ï¼Œä¸åŒ…å«çŠ¶æ€æ 
 
-    private int mNumber; // ×Ó°´Å¥ÊıÁ¿
-    private int mDegree; // °´Å¥´ò¿ªÂ·¾¶Ö®¼äµÄ½Ç¶È
-    private float mMarginY; // ÉÏÏÂ·½Áô³öµÄ¿Õ¼ä
-    private float mDistance; // Ö÷°´Å¥Óë×Ó°´Å¥¼ä¾à
-    private float mImageSize; // °´Å¥µÄ´óĞ¡
+    private int mNumber; // å­æŒ‰é’®æ•°é‡
+    private int mDegree; // æŒ‰é’®æ‰“å¼€è·¯å¾„ä¹‹é—´çš„è§’åº¦
+    private float mMarginY; // ä¸Šä¸‹æ–¹ç•™å‡ºçš„ç©ºé—´
+    private float mDistance; // ä¸»æŒ‰é’®ä¸å­æŒ‰é’®é—´è·
+    private float mImageSize; // æŒ‰é’®çš„å¤§å°
 
     private int[] mResImage = new int[6];
     private int mResMainClose, mResMainOpen;
@@ -37,6 +37,7 @@ public class SuspendButtonLayout extends RelativeLayout implements View.OnTouchL
     private float downX, downY;
     private boolean suspendedInLeft = true;
 
+    // æŒ‰é’®çŠ¶æ€
     public static final int SUSPEND_BUTTON_CLOSED = 0;
     public static final int SUSPEND_BUTTON_OPENED = 1;
     public static final int SUSPEND_BUTTON_CLOSING = 2;
@@ -45,12 +46,17 @@ public class SuspendButtonLayout extends RelativeLayout implements View.OnTouchL
     public static final int SUSPEND_BUTTON_MOVED = 5;
     private int suspendedStatus = 0;
 
+    private boolean isInit = false;
+    private boolean initPos = false;
+    private boolean mIsRight;
+    private int mStayPosY;
+
     private OnSuspendListener listener = null;
 
     public SuspendButtonLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        // »ñÈ¡ÆÁÄ»¿í¸ß
+        // è·å–å±å¹•å®½é«˜
         int statusBarHeight = 0;
         try {
             Class<?> c = Class.forName("com.android.internal.R$dimen");
@@ -65,32 +71,32 @@ public class SuspendButtonLayout extends RelativeLayout implements View.OnTouchL
         // mScreenHeight = getResources().getDisplayMetrics().heightPixels;
         mScreenHeight = getResources().getDisplayMetrics().heightPixels - statusBarHeight;
 
-        // »ñÈ¡ÊôĞÔ
+        // è·å–å±æ€§
         TypedArray ta = context.getTheme().obtainStyledAttributes(attrs,
                 R.styleable.SuspendButtonLayout, 0, 0);
         try {
-            // ×Ó°´Å¥ÊıÁ¿£¬3-6Ö®¼ä£¬Ğ¡ÓÚ3Ä¬ÈÏÎª3£¬´óÓÚ6Ä¬ÈÏÎª6
+            // å­æŒ‰é’®æ•°é‡ï¼Œ3-6ä¹‹é—´ï¼Œå°äº3é»˜è®¤ä¸º3ï¼Œå¤§äº6é»˜è®¤ä¸º6
             mNumber = ta.getInteger(R.styleable.SuspendButtonLayout_number, 6);
             if (mNumber < 3) mNumber = 3;
             if (mNumber > 6) mNumber = 6;
-            // °´Å¥´ò¿ªÂ·¾¶Ö®¼äµÄ½Ç¶È£¬¸ù¾İ×Ó°´Å¥ÊıÁ¿¶ø¶¨
+            // æŒ‰é’®æ‰“å¼€è·¯å¾„ä¹‹é—´çš„è§’åº¦ï¼Œæ ¹æ®å­æŒ‰é’®æ•°é‡è€Œå®š
             mDegree = 180 / (mNumber - 1);
 
             float minScreenWH = Math.min(mScreenWidth, mScreenHeight);
-            // ÉÏÏÂ·½Áô³öµÄ¿Õ¼ä£¬Ä¬ÈÏ·Ö±ğĞ¡ÓÚ¿í¸ßÖĞ½ÏĞ¡ÕßµÄÒ»°ë
+            // ä¸Šä¸‹æ–¹ç•™å‡ºçš„ç©ºé—´ï¼Œé»˜è®¤åˆ†åˆ«å°äºå®½é«˜ä¸­è¾ƒå°è€…çš„ä¸€åŠ
             mMarginY = ta.getDimension(R.styleable.SuspendButtonLayout_marginY, mScreenHeight / 3);
             if (mMarginY > (minScreenWH / 2)) mMarginY = minScreenWH / 2;
 
-            // Ö÷°´Å¥Óë×Ó°´Å¥¼ä¾à£¬Ä¬ÈÏĞ¡ÓÚµÈÓÚÉÏÏÂ·½Áô³öµÄ¿Õ¼ä
+            // ä¸»æŒ‰é’®ä¸å­æŒ‰é’®é—´è·ï¼Œé»˜è®¤å°äºç­‰äºä¸Šä¸‹æ–¹ç•™å‡ºçš„ç©ºé—´
             mDistance = ta.getDimension(R.styleable.SuspendButtonLayout_distance, mMarginY);
             if (mDistance > mMarginY) mDistance = mMarginY;
 
-            // °´Å¥µÄ´óĞ¡£¬Ä¬ÈÏĞ¡ÓÚÖ÷°´Å¥Óë×Ó°´Å¥¼ä¾à
+            // æŒ‰é’®çš„å¤§å°ï¼Œé»˜è®¤å°äºä¸»æŒ‰é’®ä¸å­æŒ‰é’®é—´è·
             mImageSize = ta.getDimension(R.styleable.SuspendButtonLayout_imageSize,
                     mDistance / 2);
             if (mImageSize > mDistance) mImageSize = mDistance;
 
-            // °´Å¥Í¼Æ¬×ÊÔ´
+            // æŒ‰é’®å›¾ç‰‡èµ„æº
             mResImage[0] = ta.getResourceId(R.styleable.SuspendButtonLayout_image1,
                     R.mipmap.suspend_1);
             mResImage[1] = ta.getResourceId(R.styleable.SuspendButtonLayout_image2,
@@ -108,7 +114,7 @@ public class SuspendButtonLayout extends RelativeLayout implements View.OnTouchL
             mResMainOpen = ta.getResourceId(R.styleable.SuspendButtonLayout_imageMainOpen,
                     R.mipmap.suspend_main_open);
 
-            // °´Å¥²¼¾Ö
+            // æŒ‰é’®å¸ƒå±€
             LayoutParams params = new LayoutParams((int) mImageSize, (int) mImageSize);
 
             for (int i = 0; i < mNumber; i++) {
@@ -133,7 +139,7 @@ public class SuspendButtonLayout extends RelativeLayout implements View.OnTouchL
             addView(imageMain, params);
             imageMain.setOnTouchListener(this);
 
-            // imageView_mainÔÚ×îºó»æÖÆ£¬ËùÒÔÔÚimageView_main»æÖÆÍê³Éºó³õÊ¼»¯ÒÆ¶¯¼¸¸ö¿Ø¼ş
+            // imageView_mainåœ¨æœ€åç»˜åˆ¶ï¼Œæ‰€ä»¥åœ¨imageView_mainç»˜åˆ¶å®Œæˆååˆå§‹åŒ–ç§»åŠ¨å‡ ä¸ªæ§ä»¶
             ViewTreeObserver vto = imageMain.getViewTreeObserver();
             vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 public void onGlobalLayout() {
@@ -142,9 +148,13 @@ public class SuspendButtonLayout extends RelativeLayout implements View.OnTouchL
                     //noinspection deprecation
                     imageMain.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                     suspendedStatus = SUSPEND_BUTTON_CLOSED;
-                    // Òş²Ø×Ó°´Å¥
+                    // éšè—å­æŒ‰é’®
                     for (int i = 0; i < imageViewList.size(); i++) {
                         imageViewList.get(i).setVisibility(View.GONE);
+                    }
+                    isInit = true;
+                    if (initPos) {
+                        movePosition(mIsRight, mStayPosY);
                     }
                 }
             });
@@ -190,15 +200,15 @@ public class SuspendButtonLayout extends RelativeLayout implements View.OnTouchL
             case MotionEvent.ACTION_UP:
                 startX = viewX;
                 startY = viewY;
-                // ÅĞ¶Ï×óÓÒ
-                if ((viewX + (v.getWidth() / 2)) < (mScreenWidth / 2)) { // ×ó
+                // åˆ¤æ–­å·¦å³
+                if ((viewX + (v.getWidth() / 2)) < (mScreenWidth / 2)) { // å·¦
                     suspendedInLeft = true;
                     endX = 0;
-                } else { // ÓÒ
+                } else { // å³
                     suspendedInLeft = false;
                     endX = mScreenWidth - v.getWidth();
                 }
-                // ÅĞ¶ÏÉÏÏÂ
+                // åˆ¤æ–­ä¸Šä¸‹
                 if (viewY < mMarginY) {
                     endY = mMarginY;
                 } else if ((viewY + v.getHeight()) > (mScreenHeight - mMarginY)) {
@@ -219,7 +229,7 @@ public class SuspendButtonLayout extends RelativeLayout implements View.OnTouchL
                     }
                 }
 
-                // µã»÷ÊÂ¼ş£¬´ò¿ª¹Ø±Õ
+                // ç‚¹å‡»äº‹ä»¶ï¼Œæ‰“å¼€å…³é—­
                 if (Math.abs(lastX - downX) < 1 && Math.abs(lastY - downY) < 1) {
                     openSuspendButton();
                     closeSuspendButton();
@@ -233,7 +243,7 @@ public class SuspendButtonLayout extends RelativeLayout implements View.OnTouchL
     }
 
     private void openAnim() {
-        // ÏÔÊ¾×Ó°´Å¥
+        // æ˜¾ç¤ºå­æŒ‰é’®
         for (int i = 0; i < imageViewList.size(); i++) {
             imageViewList.get(i).setVisibility(View.VISIBLE);
         }
@@ -309,8 +319,7 @@ public class SuspendButtonLayout extends RelativeLayout implements View.OnTouchL
         });
     }
 
-    private void moveAnimAll(List list, float moveX, float moveY,
-                             long duration) {
+    private void moveAnimAll(List list, float moveX, float moveY, long duration) {
         for (int i = 0; i < list.size(); i++) {
             float startX = ((ImageView) list.get(i)).getX();
             float startY = ((ImageView) list.get(i)).getY();
@@ -361,7 +370,7 @@ public class SuspendButtonLayout extends RelativeLayout implements View.OnTouchL
                             }
                             break;
                         case SUSPEND_BUTTON_CLOSED:
-                            // Òş²Ø×Ó°´Å¥
+                            // éšè—å­æŒ‰é’®
                             for (int i = 0; i < imageViewList.size(); i++) {
                                 imageViewList.get(i).setVisibility(View.GONE);
                             }
@@ -471,6 +480,40 @@ public class SuspendButtonLayout extends RelativeLayout implements View.OnTouchL
     }
 
     /**
+     * Set Button Position
+     *
+     * @param isRight  left or right
+     * @param stayPosY 1-100
+     */
+    public void setPosition(boolean isRight, int stayPosY) {
+        if (isInit) {
+            movePosition(isRight, stayPosY);
+        } else {
+            initPos = true;
+            mIsRight = isRight;
+            mStayPosY = stayPosY;
+        }
+    }
+
+    private void movePosition(boolean isRight, int stayPosY) {
+        if (suspendedStatus == SUSPEND_BUTTON_CLOSED) {
+            float endX = 0f;
+            if (isRight) {
+                endX = mScreenWidth - mImageSize;
+            }
+
+            if (stayPosY > 100) {
+                stayPosY = 100;
+            }
+            float endY = mMarginY +
+                    (mScreenHeight - mMarginY * 2 - mImageSize) * ((float) stayPosY / 100);
+
+            moveAnimSingle(imageMain, 0f, 0f, endX, endY, 0, false);
+            moveAnimInitAll(imageViewList, 0f, 0f, endX, endY, 0);
+        }
+    }
+
+    /**
      * Set Listener
      *
      * @param listener Callback
@@ -484,12 +527,12 @@ public class SuspendButtonLayout extends RelativeLayout implements View.OnTouchL
          * Button Status Listener
          *
          * @param status Button Status
-         *               <br>Closed£ºSuspendButtonLayout.SUSPEND_BUTTON_CLOSED
-         *               <br>Opend£ºSuspendButtonLayout.SUSPEND_BUTTON_OPENED
-         *               <br>Closing£ºSuspendButtonLayout.SUSPEND_BUTTON_CLOSING
-         *               <br>Opening£ºSuspendButtonLayout.SUSPEND_BUTTON_OPENING
-         *               <br>Moving£ºSuspendButtonLayout.SUSPEND_BUTTON_MOVING
-         *               <br>Moved£ºSuspendButtonLayout.SUSPEND_BUTTON_MOVED
+         *               <br>Closedï¼šSuspendButtonLayout.SUSPEND_BUTTON_CLOSED
+         *               <br>Opendï¼šSuspendButtonLayout.SUSPEND_BUTTON_OPENED
+         *               <br>Closingï¼šSuspendButtonLayout.SUSPEND_BUTTON_CLOSING
+         *               <br>Openingï¼šSuspendButtonLayout.SUSPEND_BUTTON_OPENING
+         *               <br>Movingï¼šSuspendButtonLayout.SUSPEND_BUTTON_MOVING
+         *               <br>Movedï¼šSuspendButtonLayout.SUSPEND_BUTTON_MOVED
          */
         void onButtonStatusChanged(int status);
 

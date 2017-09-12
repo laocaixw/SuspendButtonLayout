@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 // This is the library version used when deploying the artifact
-version = "1.0.1"
+version = "1.0.2"
 android {
     compileSdkVersion 24
     buildToolsVersion "25.0.3"
@@ -38,6 +38,7 @@ task sourcesJar(type: Jar) {
 task javadoc(type: Javadoc) {
     source = android.sourceSets.main.java.srcDirs
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    options.encoding = "UTF-8"
 }
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
@@ -107,9 +108,9 @@ bintray {
         issueTrackerUrl = issuesUrl
         publicDownloadNumbers = true
         version {
-            name = '1.0.1'
+            name = '1.0.2'
             desc = 'Suspend Button Layout'
-            vcsTag = '1.0.1'
+            vcsTag = '1.0.2'
             attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
         }
     }

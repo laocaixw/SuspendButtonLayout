@@ -109,8 +109,10 @@ suspendButtonLayout.showSuspendButton(); // 显示按钮
 suspendButtonLayout.openSuspendButton(); // 展开按钮
 suspendButtonLayout.closeSuspendButton(); // 关闭按钮
 
-suspendButtonLayout.setMainCloseImageResource(R.mipmap.suspend_main_close); //设置关闭时，主按钮的图片
-suspendButtonLayout.setMainOpenImageResource(R.mipmap.suspend_main_open); //设置展开时，主按钮的图片
+suspendButtonLayout.setMainCloseImageResource(R.mipmap.suspend_main_close); // 设置关闭时，主按钮的图片
+suspendButtonLayout.setMainOpenImageResource(R.mipmap.suspend_main_open); // 设置展开时，主按钮的图片
+
+suspendButtonLayout.setPosition(isRight, stayPosY); // 设置按钮位置。isRight：true在右边，false在左边；stayPosY：在'按钮停留区域'从上往下，值为从0到100。
 
 ```
 
@@ -128,6 +130,7 @@ suspendButtonLayout.setMainOpenImageResource(R.mipmap.suspend_main_open); //设�
 
 - 1.0.0 初始版本。
 - 1.0.1 修复子按钮数量少于6时，主按钮下方一直有多余按钮问题。
+- 1.0.2 增加按钮位置设置功能；修复编码问题(UTF-8)。
 
 # License
 

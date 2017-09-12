@@ -40,6 +40,7 @@ public class Main2Activity extends AppCompatActivity {
                 Toast.makeText(Main2Activity.this, "" + index, Toast.LENGTH_SHORT).show();
             }
         });
+        suspendButtonLayout.setPosition(true, 100);
         findViewById(R.id.hide).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,6 +87,13 @@ public class Main2Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 suspendButtonLayout.setMainOpenImageResource(R.mipmap.suspend_main_open);
+            }
+        });
+        findViewById(R.id.changepos).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                suspendButtonLayout.setPosition(Math.random() * 100 > 50,
+                        (int) (Math.random() * 100));
             }
         });
     }
