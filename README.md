@@ -19,7 +19,7 @@
 在app的build.gradle文件中添加依赖：
 ```
 dependencies {
-    compile 'com.laocaixw.suspendbuttonlayout:suspendbuttonlayout:1.0.2'
+    compile 'com.laocaixw.suspendbuttonlayout:suspendbuttonlayout:1.0.3'
 }
 ```
 
@@ -131,6 +131,7 @@ suspendButtonLayout.setPosition(isRight, stayPosY); // 设置按钮位置。isRi
 - 1.0.0 初始版本。
 - 1.0.1 修复子按钮数量少于6时，主按钮下方一直有多余按钮问题。
 - 1.0.2 增加按钮位置设置功能；修复编码问题(UTF-8)。
+- 1.0.3 修复改变位置后，子按钮展开方向错误问题。
 
 # License
 

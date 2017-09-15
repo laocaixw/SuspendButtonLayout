@@ -48,7 +48,6 @@ public class SuspendButtonLayout extends RelativeLayout implements View.OnTouchL
 
     private boolean isInit = false;
     private boolean initPos = false;
-    private boolean mIsRight;
     private int mStayPosY;
 
     private OnSuspendListener listener = null;
@@ -154,7 +153,7 @@ public class SuspendButtonLayout extends RelativeLayout implements View.OnTouchL
                     }
                     isInit = true;
                     if (initPos) {
-                        movePosition(mIsRight, mStayPosY);
+                        movePosition(!suspendedInLeft, mStayPosY);
                     }
                 }
             });
@@ -486,11 +485,11 @@ public class SuspendButtonLayout extends RelativeLayout implements View.OnTouchL
      * @param stayPosY 1-100
      */
     public void setPosition(boolean isRight, int stayPosY) {
+        suspendedInLeft = !isRight;
         if (isInit) {
             movePosition(isRight, stayPosY);
         } else {
             initPos = true;
-            mIsRight = isRight;
             mStayPosY = stayPosY;
         }
     }
